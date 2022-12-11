@@ -1,14 +1,23 @@
 package com.example.dicegame;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.Random;
 
@@ -66,11 +75,13 @@ public class MainActivity extends AppCompatActivity {
                     textView.setText("WINNER : Player 1");
                     textView.setVisibility(textView.VISIBLE);
                     button.setClickable(false);
+                    openLogoutDialog();
                 }
                 else if(count2>10){
                         textView.setText("WINNER: Player 2");
                     textView.setVisibility(textView.VISIBLE);
                     button.setClickable(false);
+                    openLogoutDialog();
 
                }
 
@@ -78,6 +89,33 @@ public class MainActivity extends AppCompatActivity {
                 img2.setImageResource(dice[num2]);
             }
         });
+    }
+
+    void openLogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
+        View view = layoutInflaterAndroid.inflate(R.layout.alert_dialog, null);
+        builder.setView(view);
+        builder.setCancelable(true);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        Window window = alertDialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        WindowManager.LayoutParams lp = alertDialog.getWindow().getAttributes();
+        alertDialog.getWindow().setGravity(Gravity.CENTER);
+        alertDialog.getWindow().setAttributes(lp);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        AppCompatTextView yes = view.findViewById(R.id.btnYes);
+        AppCompatTextView no = view.findViewById(R.id.btnNo);
+        yes.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+
+
+        });
+        no.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+        alertDialog.show();
     }
 }
 
